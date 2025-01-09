@@ -29,7 +29,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.ServerRecipeManager;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -221,7 +220,7 @@ public class MixerEntity extends BlockEntity implements ExtendedScreenHandlerFac
     }
 
     private static MixerRecipe getFirstRecipeMatch(MixerEntity entity){
-        for(RecipeEntry<?> recipeEntry : ((ServerRecipeManager)entity.getWorld().getRecipeManager()).values()){
+        for(RecipeEntry<?> recipeEntry : entity.getWorld().getRecipeManager().values()){
             if(recipeEntry.value() instanceof MixerRecipe recipe) {
                 if (recipe.hasRecipe(entity)) {
                     return recipe;

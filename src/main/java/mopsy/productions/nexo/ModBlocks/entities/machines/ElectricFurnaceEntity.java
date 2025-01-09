@@ -21,7 +21,6 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.ServerRecipeManager;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.recipe.input.SingleStackRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
@@ -178,7 +177,7 @@ public class ElectricFurnaceEntity extends BlockEntity implements ExtendedScreen
     }
 
     private static SmeltingRecipe getFirstRecipeMatch(Inventory inventory, World world){
-        return ((ServerRecipeManager)world.getRecipeManager()).getFirstMatch(RecipeType.SMELTING, new SingleStackRecipeInput(inventory.getStack(0)),world).orElse(null).value();
+        return world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, new SingleStackRecipeInput(inventory.getStack(0)),world).orElse(null).value();
     }
 
     private static boolean canAcceptRecipeOutput(SmeltingRecipe recipe, Inventory inventory, int count, RegistryWrapper.WrapperLookup wrapper) {

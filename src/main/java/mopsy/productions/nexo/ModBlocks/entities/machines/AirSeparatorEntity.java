@@ -31,7 +31,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.ServerRecipeManager;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -184,7 +183,7 @@ public class AirSeparatorEntity extends BlockEntity implements ExtendedScreenHan
     }
 
     private static AirSeparatorRecipe getRecipe(AirSeparatorEntity entity){
-        for(RecipeEntry<?> recipeEntry : ((ServerRecipeManager)entity.getWorld().getRecipeManager()).values()){
+        for(RecipeEntry<?> recipeEntry : entity.getWorld().getRecipeManager().values()){
             if(recipeEntry.value() instanceof AirSeparatorRecipe recipe) {
                 if (recipe.hasRecipe(entity)) {
                     return recipe;

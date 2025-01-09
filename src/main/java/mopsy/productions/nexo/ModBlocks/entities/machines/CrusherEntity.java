@@ -22,7 +22,6 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.ServerRecipeManager;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -136,7 +135,7 @@ public class CrusherEntity extends BlockEntity implements ExtendedScreenHandlerF
     }
 
     private static CrusherRecipe getRecipe(CrusherEntity entity){
-        for(RecipeEntry<?> recipeEntry : ((ServerRecipeManager)entity.getWorld().getRecipeManager()).values()){
+        for(RecipeEntry<?> recipeEntry : entity.getWorld().getRecipeManager().values()){
             if(recipeEntry.value() instanceof CrusherRecipe recipe) {
                 if (recipe.hasRecipe(entity)) {
                     return recipe;

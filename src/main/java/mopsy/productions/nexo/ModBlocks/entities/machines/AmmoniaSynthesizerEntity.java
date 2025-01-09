@@ -30,7 +30,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.ServerRecipeManager;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -181,7 +180,7 @@ public class AmmoniaSynthesizerEntity extends BlockEntity implements ExtendedScr
     }
 
     private static AmmoniaSynthesizerRecipe getFirstRecipeMatch(AmmoniaSynthesizerEntity entity){
-        for(RecipeEntry<?> recipeEntry : ((ServerRecipeManager)entity.getWorld().getRecipeManager()).values()){
+        for(RecipeEntry<?> recipeEntry : entity.getWorld().getRecipeManager().values()){
             if(recipeEntry.value() instanceof AmmoniaSynthesizerRecipe recipe) {
                 if (recipe.hasRecipe(entity)) {
                     return recipe;

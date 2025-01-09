@@ -18,28 +18,22 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
-import net.minecraft.world.tick.ScheduledTickView;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
-import static mopsy.productions.nexo.Main.modid;
 import static net.minecraft.state.property.Properties.WATERLOGGED;
 
 @SuppressWarnings("deprecation")
@@ -88,7 +82,6 @@ public class FluidPipe_MK1Block extends BlockWithEntity implements IModID, Block
                 .requiresTool()
                 .nonOpaque()
                 .mapColor(MapColor.GRAY)
-                .registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(modid,"fluid_pipe_mk1")))
         );
         this.setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED,false));
     }
@@ -168,9 +161,9 @@ public class FluidPipe_MK1Block extends BlockWithEntity implements IModID, Block
 
 
     @Override
-    public BlockState getStateForNeighborUpdate(BlockState state, WorldView world, ScheduledTickView tickView, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, Random random) {
+    protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
         if (state.get(WATERLOGGED)) {
-            tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
         }
 
         if(neighborState.isOf(this))

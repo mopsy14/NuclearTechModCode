@@ -29,7 +29,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.ServerRecipeManager;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -153,7 +152,7 @@ public class ElectrolyzerEntity extends BlockEntity implements ExtendedScreenHan
     }
 
     private static ElectrolyzerRecipe getFirstRecipeMatch(ElectrolyzerEntity entity){
-        Collection<RecipeEntry<?>> recipes = ((ServerRecipeManager)entity.getWorld().getRecipeManager()).values();
+        Collection<RecipeEntry<?>> recipes = entity.getWorld().getRecipeManager().values();
         for(RecipeEntry<?> recipeEntry : recipes){
             if(recipeEntry.value() instanceof ElectrolyzerRecipe recipe) {
                 if (recipe.hasRecipe(entity)) {

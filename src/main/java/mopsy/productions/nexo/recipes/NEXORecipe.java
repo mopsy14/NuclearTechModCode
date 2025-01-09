@@ -18,8 +18,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.recipe.*;
-import net.minecraft.recipe.book.RecipeBookCategory;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.input.RecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
@@ -306,7 +308,7 @@ public class NEXORecipe implements Recipe<RecipeInput> {
         public static final Serializer INSTANCE = new Serializer();
         public static final MapCodec<NEXORecipe> CODEC = RecordCodecBuilder.mapCodec(in -> in.group(
                 Identifier.CODEC.fieldOf("type").forGetter(r -> r.id),
-                Ingredient.CODEC.listOf().fieldOf("item_inputs").orElse(Collections.emptyList()).forGetter(r -> r.inputs),
+                Ingredient.ALLOW_EMPTY_CODEC.listOf().fieldOf("item_inputs").orElse(Collections.emptyList()).forGetter(r -> r.inputs),
                 ItemStack.CODEC.listOf().fieldOf("item_outputs").orElse(Collections.emptyList()).forGetter(r -> r.outputs),
                 NFluidStack.CODEC.listOf().fieldOf("fluid_inputs").orElse(Collections.emptyList()).forGetter(r -> r.inputFluids),
                 NFluidStack.CODEC.listOf().fieldOf("fluid_outputs").orElse(Collections.emptyList()).forGetter(r -> r.outputFluids),
@@ -315,7 +317,7 @@ public class NEXORecipe implements Recipe<RecipeInput> {
         public static final PacketCodec<RegistryByteBuf, NEXORecipe> PACKET_CODEC = PacketCodec.tuple(
                 Identifier.PACKET_CODEC,
                 recipe->recipe.id,
-                PacketCodecs.codec(Ingredient.CODEC.listOf()),
+                PacketCodecs.codec(Ingredient.ALLOW_EMPTY_CODEC.listOf()),
                 recipe->recipe.inputs,
                 PacketCodecs.codec(ItemStack.CODEC.listOf()),
                 recipe->recipe.outputs,
@@ -497,17 +499,18 @@ public class NEXORecipe implements Recipe<RecipeInput> {
      * UNUSED METHOD OF RECIPE!!!
      */
     @Override
-    public IngredientPlacement getIngredientPlacement() {
-        return null;
+    public boolean fits(int width, int height) {
+        return false;
     }
 
     /**
      * UNUSED METHOD OF RECIPE!!!
      */
     @Override
-    public RecipeBookCategory getRecipeBookCategory() {
+    public ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
         return null;
     }
+
 
     @Override
     public boolean isIgnoredInRecipeBook() {

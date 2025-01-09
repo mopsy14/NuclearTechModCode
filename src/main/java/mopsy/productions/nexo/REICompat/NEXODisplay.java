@@ -8,11 +8,10 @@ import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import mopsy.productions.nexo.recipes.NEXORecipe;
 import mopsy.productions.nexo.util.NFluidStack;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
@@ -34,8 +33,8 @@ public abstract class NEXODisplay implements Display {
     public List<EntryIngredient> getInputEntries() {
         List<EntryIngredient> res = new ArrayList<>();
         for(Ingredient ingredient : recipe.inputs){
-            for(RegistryEntry<Item> item : ingredient.getMatchingItems()){
-                res.add(EntryIngredients.of(item.value()));
+            for(ItemStack item : ingredient.getMatchingStacks()){
+                res.add(EntryIngredients.of(item.getItem()));
             }
         }
         for(NFluidStack stack : recipe.inputFluids){
@@ -63,7 +62,18 @@ public abstract class NEXODisplay implements Display {
     }
 
     protected static <D extends NEXODisplay> DisplaySerializer<D> buildSerializer(Function<D,NEXORecipe> recipeGetter, Function<NEXORecipe,D> displayConstructor){
-        return DisplaySerializer.of(RecordCodecBuilder.mapCodec(in -> in.group(
+        return  new DisplaySerializer<D>() {
+            @Override
+            public NbtCompound save(NbtCompound tag, D display) {
+                return
+            }
+
+            @Override
+            public D read(NbtCompound tag) {
+                return null;
+            }
+        }
+                DisplaySerializer.of(RecordCodecBuilder.mapCodec(in -> in.group(
                         NEXORecipe.Serializer.CODEC.forGetter(recipeGetter)
                 ).apply(in, displayConstructor)),
                 PacketCodec.tuple(NEXORecipe.Serializer.PACKET_CODEC,
